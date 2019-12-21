@@ -30,17 +30,15 @@ public class RenderPanel extends JPanel {
         this.widthScale = width / map.width;
         this.heightScale = height / map.height;
         this.setSize(frame.getWidth(), frame.getHeight() - 38);
-        g.setColor(new Color(170, 224, 103));
+        g.setColor(new Color(210, 224, 103));
         g.fillRect(0, 0, this.width, this.height);
 
-        //draw jungle
-        g.setColor(new Color(0, 160, 7));
+        g.setColor(new Color(132, 160, 0));
         g.fillRect(map.jungleLowerLeft.x * widthScale,
                 map.jungleLowerLeft.y * heightScale,
                 map.jungleWidth * widthScale,
                 map.jungleHeight * heightScale);
 
-        //draw grass
         for (Plant grass : map.getGrassList()) {
             g.setColor(grass.toColor());
             int y = map.curvedPosition(grass.getPosition()).y * heightScale;
@@ -48,7 +46,6 @@ public class RenderPanel extends JPanel {
             g.fillRect(x, y, widthScale, heightScale);
         }
 
-        //draw Animals
         for (Animal a : map.getAnimalsList()) {
             g.setColor(a.toColor());
             int y = map.curvedPosition(a.getPosition()).y * heightScale;

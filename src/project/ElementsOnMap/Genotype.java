@@ -6,7 +6,7 @@ public class Genotype {
     private int genotypeSize=32;
     private int numberOfGenes=8;
 
-    public Genotype(){
+    Genotype(){
         this.genotype = new int[this.genotypeSize];
         createGenotype();
         validGenotype();
@@ -21,10 +21,10 @@ public class Genotype {
         this.genotype = Arrays.copyOf(newGenotype.getGenotype(), genotypeSize);
     }
 
-    public Genotype(Genotype firstParent, Genotype secondParent) {
+    Genotype(Genotype firstParent, Genotype secondParent) {
         this();
         int firstCut = (int) (Math.random() * (this.genotypeSize/3 - 1));
-        int secondCut = (int)(firstCut+this.genotypeSize/3);
+        int secondCut = firstCut+this.genotypeSize/3;
 
         for (int i = 0; i <= firstCut; i++)
             this.genotype[i] = firstParent.genotype[i];
@@ -69,7 +69,7 @@ public class Genotype {
         Arrays.sort(genotype);
     }
 
-    public int returnRandomGen() {
+    int returnRandomGen() {
         int rand = (int) (Math.random() * (genotypeSize));
         return genotype[rand];
     }

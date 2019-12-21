@@ -14,7 +14,7 @@ import java.util.Set;
 public class Animal implements IWorldMapElement {
     public Genotype genotype;
     private Vector2d position;
-    public int energy;
+    private int energy;
     private int startEnergy;
     private MapDirections direction;
     private Set<IPositionChangeObserver> observers = new HashSet<>();
@@ -93,7 +93,7 @@ public class Animal implements IWorldMapElement {
 
 
     public void turn() {
-        double probabilityTab []=new double[8];
+        double[] probabilityTab =new double[8];
         for(int i=0; i<8; i++){
             probabilityTab[i]=0;
         }
@@ -104,7 +104,7 @@ public class Animal implements IWorldMapElement {
             probabilityTab[i]+=probabilityTab[i-1];
         }
         Random r = new Random();
-        Double a = r.nextDouble();
+        double a = r.nextDouble();
         int numOfRotation = genotype.returnRandomGen();
         for(int i=1; i<8; i++) {
             if(probabilityTab[i]<=a && probabilityTab[i-1]>=a){

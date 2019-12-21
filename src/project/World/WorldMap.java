@@ -11,15 +11,15 @@ import project.Visualization.MapVisualizer;
 import java.util.*;
 
 public class WorldMap implements IWorldMap, IPositionChangeObserver {
-    public final Vector2d upperRight;
-    public final Vector2d lowerLeft;
-    public final Vector2d jungleUpperRight;
+    private final Vector2d upperRight;
+    private final Vector2d lowerLeft;
+    private final Vector2d jungleUpperRight;
     public final Vector2d jungleLowerLeft;
     public final int jungleWidth;
     public final int jungleHeight;
     public final int width;
     public final int height;
-    public final double jungleRatio;
+    private final double jungleRatio;
     private int plantEnergy;
     private int moveEnergy;
     private int startEnergy;
@@ -28,7 +28,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
     private LinkedList<Animal> animalsList;
 
 
-    public WorldMap(int width, int height, int plantEnergy, int moveEnergy, int startEnergy, double jungleRatio){
+    WorldMap(int width, int height, int plantEnergy, int moveEnergy, int startEnergy, double jungleRatio){
         this.width = width;
         this.height = height;
         this.lowerLeft = new Vector2d(0, 0);
@@ -43,18 +43,18 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         this.jungleRatio=jungleRatio;
         jungleWidth = (int)(width * jungleRatio);
         jungleHeight = (int)(height * jungleRatio);
-        jungleLowerLeft = new Vector2d((int)((width - jungleWidth)/2), (int)((height - jungleHeight)/2));
+        jungleLowerLeft = new Vector2d((width - jungleWidth)/2, (height - jungleHeight)/2);
         jungleUpperRight = new Vector2d(lowerLeft.x + jungleWidth, lowerLeft.y + jungleHeight);
     }
 
-    public void moveRandomAllAnimals() {
+    void moveRandomAllAnimals() {
         List<Animal> currentAnimalsOnMap = getAnimalsList();
         for (int i = 0; i < currentAnimalsOnMap.size(); i++) {
             currentAnimalsOnMap.get(i).turn();
             currentAnimalsOnMap.get(i).move(MoveDirections.FORWARD);
         }
     }
-    public void setPlants() {
+    void setPlants() {
             Vector2d newPlantJunglePosition=getRandomPositionInJungle();
             if (plants.get(newPlantJunglePosition) == null && canBePlaced(newPlantJunglePosition))
                 place(new Plant(newPlantJunglePosition));
@@ -65,7 +65,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
 
     }
 
-    public void breeding() {
+    void breeding() {
         for (List<Animal> animalsWantToBreed : animals.values()) {
             if (animalsWantToBreed != null) {
                 if (animalsWantToBreed.size() >= 2) {
@@ -83,7 +83,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
             }
         }
 
-    public void dayAfterDay() {
+    void dayAfterDay() {
         for (List<Animal> animalsOnMap : animals.values()) {
             if (animalsOnMap != null) {
                 if (animalsOnMap.size() > 0) {
@@ -106,7 +106,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         return new Vector2d(xAfterMove, yAfterMove);
     }
 
-    public void eating() {
+    void eating() {
         List<Plant> plantsWillBeEaten = new LinkedList<>();
         for (Plant plant : plants.values()) {
             List<Animal> animalsWantToEat = animals.get(plant.getPosition());
@@ -125,7 +125,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         }
     }
 
-    public void removeDeadAnimals() {
+    void removeDeadAnimals() {
         LinkedList<Animal> currentAnimalsOnMap = animalsList;
         for (int i = 0; i < currentAnimalsOnMap.size(); i++) {
             if (currentAnimalsOnMap.get(i).isDead()) {
@@ -156,7 +156,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         return objectAt(position) != null;
     }
 
-    public boolean addAnimalOnRandomField() {
+    void addAnimalOnRandomField() {
         boolean a = false;
         while (!a) {
             Vector2d position = curvedPosition(new Vector2d((int) (Math.random() * (this.width)), (int) (Math.random() * (this.height))));
@@ -165,9 +165,8 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
                 a=true;
             }
         }
-        return a;
     }
-    public void place(Animal animal) {
+    void place(Animal animal) {
         Vector2d position = curvedPosition(animal.getPosition());
         if (canBePlaced(position)) {
             addAnimal(animal, position);
@@ -176,7 +175,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         }
     }
 
-    public void place(Plant plant) {
+    private void place(Plant plant) {
         if (!isOccupied(plant.getPosition())) {
             plants.put(plant.getPosition(), plant);
         }
@@ -231,7 +230,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         return false;
     }
 
-    public void showAllGenotypes() {
+    void showAllGenotypes() {
         LinkedList<Animal> currentAnimalsOnMap = animalsList;
         System.out.println("Liczba zwierzaczkow: " + currentAnimalsOnMap.size());
         for(int i=0; i<currentAnimalsOnMap.size(); i++) {
@@ -242,7 +241,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
             System.out.println(" ");
         }
     }
-    public void showAllEnergies() {
+    void showAllEnergies() {
         LinkedList<Animal> currentAnimalsOnMap = animalsList;
         for (int i = 0; i < currentAnimalsOnMap.size(); i++) {
             int j = i + 1;
@@ -251,7 +250,7 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         }
     }
 
-    public void showNumberOfAllPlants() {
+    void showNumberOfAllPlants() {
         Collection<Plant> currentPlantsOnMap = this.plants.values();
         System.out.println("Aktualna liczba roślin na mapie: " + currentPlantsOnMap.size());
     }
@@ -272,10 +271,10 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
         return this.animalsList;
     }
 
-    public Vector2d getRandomPositionInJungle(){
+    Vector2d getRandomPositionInJungle(){
         return new Vector2d((int) (Math.random() * (jungleWidth) + jungleLowerLeft.x), (int) (Math.random() * (jungleHeight) + jungleLowerLeft.y));
     }
-    public Vector2d getRandomPositionInSteppe() {
+    Vector2d getRandomPositionInSteppe() {
         Vector2d steppePosition = new Vector2d((int) (Math.random() * (width) + lowerLeft.x), (int) (Math.random() * (height) + lowerLeft.y));
         while (steppePosition.follows(jungleLowerLeft) && steppePosition.precedes(jungleUpperRight)) {
             steppePosition = new Vector2d((int) (Math.random() * (width) + lowerLeft.x), (int) (Math.random() * (height) + lowerLeft.y));
