@@ -1,4 +1,4 @@
-package project;
+package project.Enums;
 
 public enum MoveDirections {
     FORWARD,

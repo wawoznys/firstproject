@@ -1,4 +1,6 @@
-package project;
+package project.Enums;
+
+import project.ElementsOnMap.Vector2d;
 
 public enum MapDirections {
     NORTH,
@@ -87,7 +89,7 @@ public enum MapDirections {
             case WEST:
                 return new Vector2d(-1,0);
             case NORTHWEST:
-                return new Vector2d(-1,-1);
+                return new Vector2d(-1,1);
             case SOUTHWEST:
                 return new Vector2d(-1,-1);
             case NORTHEAST:
