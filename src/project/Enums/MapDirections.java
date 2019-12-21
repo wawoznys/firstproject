@@ -96,7 +96,8 @@ public enum MapDirections {
                 return new Vector2d(1,1);
             case SOUTHEAST:
                 return new Vector2d(1,-1);
+            default:
+                return new Vector2d(0,0);
         }
-        return null;
     }
 }

@@ -5,5 +5,6 @@ public class World {
         Simulation simulation = new Simulation(1000);
         simulation.simulate();
 
+
     }
 }

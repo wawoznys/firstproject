@@ -3,7 +3,6 @@ package project.World;
 import project.ElementsOnMap.Animal;
 import project.ElementsOnMap.Plant;
 import project.ElementsOnMap.Vector2d;
-import project.Enums.MapDirections;
 import project.Enums.MoveDirections;
 import project.Interfraces.IPositionChangeObserver;
 import project.Interfraces.IWorldMap;
@@ -74,22 +73,15 @@ public class WorldMap implements IWorldMap, IPositionChangeObserver {
                     Animal firstParent = animalsWantToBreed.get(0);
                     Animal secondParent = animalsWantToBreed.get(1);
                     if (firstParent.isAbleToBreed() && secondParent.isAbleToBreed()){
-                        Animal child = secondParent.breed(firstParent, curvedPosition((firstParent.getPosition())));
-                        place(child);
-                        System.out.println("Let's have a Baby!");
+                         Animal child = secondParent.breed(firstParent, curvedPosition((firstParent.getPosition())));
+                         place(child);
+                         System.out.println("Let's have a Baby!");
+                        }
+
                     }
                 }
             }
         }
-    }
-    public Vector2d placeToBirth(Vector2d position){
-        for(MapDirections direction : MapDirections.values()){
-            Vector2d birthPos = curvedPosition(direction.toUnitVector().add(position));
-            if(canBePlaced(birthPos));
-            return birthPos;
-        }
-        return curvedPosition(position);
-    }
 
     public void dayAfterDay() {
         for (List<Animal> animalsOnMap : animals.values()) {
